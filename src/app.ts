@@ -1,13 +1,15 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Application, Request, Response, Router } from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import compression from 'compression';
 import cors from 'cors';
 //documentation
 import swaggerUi from 'swagger-ui-express';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-import swaggerDocument from './config/swagger.json';
-
+import swaggerJsdoc from 'swagger-jsdoc';
+// import swaggerDocument from './config/swagger.json';
+// import { OpenApi, textPlain } from 'ts-openapi';
+import { initHello } from './routes/hello';
+import { initOpenApi, openApiInstance } from './docs/openapi';
 // db
 import mongoose from 'mongoose';
 // routes
@@ -17,7 +19,9 @@ import toursRouter from './routes/tours';
 
 // setup
 dotenv.config();
-const app: Express = express();
+//: Express vs. : Application vs. nothing
+const app: Application = express();
+// const router: Router = express.Router(); //use later to set base url to /api/v1
 const port = process.env.PORT || 9001;
 
 // middleware
@@ -27,12 +31,13 @@ app.use(cors()); // cors
 app.use(express.json()); // json
 
 //docs
-app.use(
-    '/docs',
-    swaggerUi.serve, 
-    swaggerUi.setup(swaggerDocument)
-);
+// app.use(
+//     '/api/docs',
+//     swaggerUi.serve, 
+//     swaggerUi.setup(swaggerDocument)
+// );
 
+//logging
 app.use((req: Request, res: Response, next) => {
     console.log(req.path, req.method);
     next();
@@ -43,6 +48,10 @@ app.use((req: Request, res: Response, next) => {
 // });
 app.use('/api/items', itemsRouter);
 app.use('/api/tours', toursRouter);
+
+//docs2
+initHello(app, openApiInstance);
+initOpenApi(app, openApiInstance);
 
 // connect to DB
 // const DB_URI = 'mongodb://localhost:27017/testDB';
@@ -64,12 +73,3 @@ mongoose.connect(DB_URI)
     .catch((err) => {
         console.log(err);
     });
-
-// start
-
-/*
-/signup
-/login
-/auth
-/logout
-*/
