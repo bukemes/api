@@ -19,8 +19,7 @@ used to setup, configure, structure and build the project
 ## Swagger
 used to implement API documentation into the project
 1. [LogRocket | Documenting your Express API with Swagger](https://blog.logrocket.com/documenting-your-express-api-with-swagger/)
-<!-- 1. [Medium | Maintaining REST API Documentation with Node.js — Part I](https://medium.com/pipedrive-engineering/maintaining-rest-api-documentation-with-node-js-part-i-65e9700e3b30)
-1. [Medium | Maintaining REST API Documentation with Node.js — Part II ](https://medium.com/pipedrive-engineering/maintaining-rest-api-documentation-with-node-js-part-ii-26d1a622d3fe) -->
+2. [YouTube | Building a Rest API](https://www.youtube.com/playlist?list=PL0iFifR5umclpRsRgWQtOtcgUffblcZgx)
 
 
 ## Live (real-time communication)

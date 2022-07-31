@@ -18,4 +18,12 @@ const tourSchema = new Schema({
     },
 }, { timestamps: true });
 
+export interface TourModel {
+    title: number;
+    email: string;
+    name: string;
+    status?: 'Happy' | 'Sad';
+    
+}
+
 export default mongoose.model('Tour', tourSchema);
