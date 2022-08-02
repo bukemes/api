@@ -39,7 +39,7 @@ const createTour = async (req: Request, res: Response) => {
         const tour = await Tour.create({
             title, description, headerImage, duration,
         });
-        res.status(200).json(tour);
+        res.status(201).json(tour);
     } catch (error) {
         let message: string;
         if (error instanceof Error){

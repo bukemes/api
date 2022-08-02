@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 //validate request against a schema.
 import {Request, Response, NextFunction} from 'express';
 import { AnyZodObject } from 'zod';
@@ -18,4 +19,4 @@ const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: N
     }
 };
 
-export default validate;
+export {validate};

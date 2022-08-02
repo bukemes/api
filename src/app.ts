@@ -16,6 +16,7 @@ import openapiSpecification from './utilities/swagger';
 import mongoose from 'mongoose';
 //custom shit
 import logger from './utilities/logger';
+import { handleBodyParserErrors } from './utilities/utils';
 // routes
 import toursRouter from './routers/toursRouter';
 
@@ -25,11 +26,16 @@ const app: Application = express(); //create express app
 const port = process.env.PORT || 9001; //create port variable
 
 // middleware
-app.use(compression()); // gzip
+//security
 app.use(helmet()); // xss and other stuff
 app.use(cors()); // cors
-app.use(express.json()); // json
+//json
+app.use(express.json({strict:true})); // json
+app.use(handleBodyParserErrors); //handle express.json's bodyparses errors in case of eg bad json
+//docs
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
+//efficiency
+app.use(compression()); // gzip
 
 //routes
 app.use('/api/tours', toursRouter);

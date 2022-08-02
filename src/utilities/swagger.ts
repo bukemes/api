@@ -6,11 +6,18 @@ const openapiOptions: swaggerJSDoc.Options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Bukemes API',
+            title: 'Bukemes (possible future rebranding: Bukin)\'s API',
             version: '1.0.0',
-            description: 'Booking Content Management System',
+            description: 'This is the backend API of Bukemes, a Booking Content Management System. \n \
+                          It is responsible for connecting the administrative frontend to the database, \n \
+                          alongside providing routes to populate your website with managed data.',
         },
-        servers: [{url:'http://localhost:9001'}],
+        servers: [
+            {
+                url:'http://localhost:9001/api',
+                description: 'Local server',
+            }
+        ],
         components:{
             securitySchemes: {
                 bearerAuth:{
