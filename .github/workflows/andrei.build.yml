@@ -1,0 +1,30 @@
+name: build
+
+on:
+  push:
+    branches: [ "main" ] # only do something if the branch "main" gets pushed to.
+  pull_request:
+    branches: [ "main" ] # the branches below must be a subset of the branches above
+  
+jobs:
+  build: 
+    runs-on: ubuntu-latest #select OS
+    
+    strategy: #install node.js
+      matrix:
+        node-version: [16.x] # version 16.x || [10.x, 12.x, 14.x, 15.x]
+        
+    steps:
+      - name: checkout Repository
+        uses: actions/checkout@v3 # checksout current repository (a default Github Action)
+      
+#       - name: Setup node.js | ${{ matrix.node-version }}
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node-version }}
+      
+      - name: install dependencies
+        run: npm ci # clean install, similar to "npm i" but used in automated workflows
+      
+      - name: build the project
+        run: npm run build # build the project
