@@ -1,5 +1,11 @@
 import express from 'express';
 import { getTours, getTourById, createTour } from '../controllers/tourController';
+/**
+ * @openapi
+ * tags: 
+ *   name: Tours
+ *   description: Tour operations
+ */
 
 /**
  * @openapi
@@ -64,6 +70,7 @@ const toursRouter = express.Router();
  * @openapi
  * /tours:
  *  get:
+ *    tags: [Tours]
  *    summary: Retrive a list of all tours
  *    description: Retrieve a JSON array of all published tours
  *    responses:
@@ -82,6 +89,7 @@ toursRouter.get('/', getTours);
  * @openapi
  * /tours/{id}:
  *  get:
+ *    tags: [Tours]
  *    summary: Retrive a specific Tour
  *    description: Retrieve a specific Tour by providing its identifier.
  *    parameters:
@@ -111,6 +119,7 @@ toursRouter.get('/:id', getTourById);
  * @openapi
  * /tours:
  *   post:
+ *     tags: [Tours]
  *     summary: Create a new tour
  *     description: POST a valid JSON object of a new tour to store it in the database
  *     requestBody:
@@ -122,10 +131,19 @@ toursRouter.get('/:id', getTourById);
  *     responses:
  *       201:
  *         description: Returns the newly created tour in the response body in JSON format
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Tour'  
  *       400:
  *         description: Bad request, returns the error message in the response body in JSON format
  *       401:
  *         description: Unauthorized
+ *       404:
+ *        description: No tour with that ID found
+ *       500:
+ *        description: Internal server error
  */
 toursRouter.post('/', createTour);
 
@@ -138,7 +156,37 @@ toursRouter.delete('/:id', (req, res) => {
     res.json({ mssg: 'DELETE a specific tour' });
 });
 
-// PUT
+/**
+ * @openapi
+ * /tours/{id}:
+ *   put:
+ *     tags: [Tours]
+ *     summary: Create a new tour
+ *     description: POST a valid JSON object of a new tour to store it in the database
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: mongoDB's identifier of a specific tour
+ *         schema:  
+ *           type: string
+ *           example: 62e9a22be97652d0a5b89eb6
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Tour_Create'
+ *     responses:
+ *       204:
+ *         description: Returns the updated tour in the response body in JSON format
+ *       400:
+ *         description: Bad request, returns the error message in the response body in JSON format
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: internal server error
+ */
 toursRouter.put('/', (req, res) => {
     res.json({ mssg: 'Update all tours (eg add new field to all)' });
 });

@@ -20,6 +20,8 @@ used to setup, configure, structure and build the project
 used to implement API documentation into the project
 1. [LogRocket | Documenting your Express API with Swagger](https://blog.logrocket.com/documenting-your-express-api-with-swagger/)
 2. [YouTube | Building a Rest API](https://www.youtube.com/playlist?list=PL0iFifR5umclpRsRgWQtOtcgUffblcZgx)
+3. [YouTube | Autogen Swagger Docs with Express & Node](https://www.youtube.com/watch?v=5aryMKiBEKY)
+4. [Dev.to | How2Document an Express API with Swagger & JSDoc](https://dev.to/kabartolo/how-to-document-an-express-api-with-swagger-ui-and-jsdoc-50do)
 
 
 ## Live (real-time communication)

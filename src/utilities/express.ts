@@ -8,14 +8,14 @@ import helmet from 'helmet'; //import xss from 'xss'; -> helmet.xss(); takes car
 import cors from 'cors';
 //documentation
 import swaggerUI from 'swagger-ui-express';
-import openapiSpecification from './utilities/swagger';
+import openapiSpecification from './swagger';
 //db
 import mongoose from 'mongoose';
 //custom shit
-import logger from './utilities/logger';
-import { handleBodyParserErrors } from './utilities/utils';
+import logger from './logger';
+import { handleBodyParserErrors } from './utils';
 // routes
-import toursRouter from './routers/toursRouter';
+import toursRouter from '../routers/toursRouter';
 
 // setup
 dotenv.config(); //get environment variables
