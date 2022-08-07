@@ -22,3 +22,31 @@ split up actions, only manage 1 dockerfile, smaller final docker image.
 -> smallest image to dockerhub
 
 ## 
+
+
+
+
+
+
+
+TODO
+
+1. Write 1-2 tests
+    -> run using "npm run test"
+
+2. Create "Test" Action 
+    -> use mongo in GHA -> https://github.com/marketplace/actions/mongodb-in-github-actions
+
+    -> uses npm cache from "Build" action
+    -> uses artifact(s) from "Build" action
+        -> copy ./dist
+        -> copy package.json, 
+                eslintrc.json (neccesary?)
+                tsconfig.json
+                .gitignore
+                
+    -> npm ci
+    -> npm run test
+
+3. Create "Deploy" Action
+    -> from test artifacts (if tests pass!!!) generate a docker image.

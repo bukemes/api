@@ -1,4 +1,4 @@
-# name: CI/CD
+# name: deploy
 
 # on:
 #   push:
@@ -36,8 +36,8 @@
 #           name: bukemes-back-build
 #           path: ./dist # or path/to/artifact
 
-#       - name: test
-#         run: npm run test # test the project
+#       # - name: test
+#       #   run: npm run test # test the project
   
 #   # test:
 #   #   runs-on: ubuntu-latest
