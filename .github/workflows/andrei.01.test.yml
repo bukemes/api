@@ -1,10 +1,10 @@
-name: build
+name: 01 - test
 
 on:
   push:
-    branches: [ "workflows" ] # only do something if the branch "main" gets pushed to.
+    branches: [ "dev" ] # only do something if the branch "main" gets pushed to.
   pull_request:
-    branches: [ "workflows" ] # the branches below must be a subset of the branches above
+    branches: [ "dev" ] # the branches below must be a subset of the branches above
   
 jobs:
   build: 
@@ -27,16 +27,7 @@ jobs:
       - name: install dependencies
         run: npm ci # clean install, similar to "npm i" but used in automated workflows
       
-      - name: build the project
-        run: npm run build # build the project
-
-      - name: upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: bukemes-back-build
-          path: ./dist # or path/to/artifact
-
-      - name: test
+      - name: run tests
         run: npm run test # test the project
   
   # test:
