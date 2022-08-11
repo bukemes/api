@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTours, getTourById, createTour } from '../controllers/tourController';
+import { getTours, getTourById, createTour } from '../controllers/toursController';
 /**
  * @openapi
  * tags: 

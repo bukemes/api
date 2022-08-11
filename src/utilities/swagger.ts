@@ -1,6 +1,5 @@
 import swaggerJSDoc from 'swagger-jsdoc';
-// import swaggerUi from 'swagger-ui-express';
-// import { Application } from 'express';
+
 
 const openapiOptions: swaggerJSDoc.Options = {
     definition: {
@@ -39,6 +38,9 @@ const openapiOptions: swaggerJSDoc.Options = {
 const openapiSpecification = swaggerJSDoc(openapiOptions);
 
 export default openapiSpecification;
+
+// import swaggerUi from 'swagger-ui-express';
+// import { Application } from 'express';
 
 // export default function initializeSwagger(app: Application) {
 //     app.use('/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));

@@ -1,6 +1,19 @@
-import mongoose, { Schema } from 'mongoose';
+// import mongoose, { Schema } from 'mongoose';
+import mongoose, { Types, Schema, Document } from 'mongoose';
 
-const tourSchema = new Schema({
+export interface TourInput {
+    title: string;
+    description: string;
+    headerImage: string;
+    duration: number;
+}
+
+export interface TourDocument extends TourInput, Document {
+    updatedAt: Date;
+    createdAt: Date;
+}
+
+const tourSchema = new Schema<TourDocument>({
     title: {
         type: String,
         required: true,
@@ -18,12 +31,7 @@ const tourSchema = new Schema({
     },
 }, { timestamps: true });
 
-export interface TourModel {
-    title: number;
-    email: string;
-    name: string;
-    status?: 'Happy' | 'Sad';
-    
-}
 
-export default mongoose.model('Tour', tourSchema);
+const tourModel = mongoose.model('Tour', tourSchema);
+// export default mongoose.model('Tour', tourSchema);
+export default tourModel;

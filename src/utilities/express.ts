@@ -1,51 +1,50 @@
-//config & init
-import express, { Application } from 'express';
-import dotenv from 'dotenv';
-//middleware
+// config & init
+import express, { Application, Request, Response, NextFunction } from 'express';
+// middleware
 import compression from 'compression';
-//security
-import helmet from 'helmet'; //import xss from 'xss'; -> helmet.xss(); takes care of that.
-import cors from 'cors';
-//documentation
+// security
+import helmet from 'helmet'; // import xss from 'xss'; -> helmet.xss(); takes care of that.
+import cors from 'cors'; // helmet contains cors? need to check. 
+// documentation
 import swaggerUI from 'swagger-ui-express';
 import openapiSpecification from './swagger';
-//db
-import mongoose from 'mongoose';
-//custom shit
-import logger from './logger';
+// utilities
+// import logger from './logger';
 import { handleBodyParserErrors } from './utils';
 // routes
 import toursRouter from '../routers/toursRouter';
 
-// setup
-dotenv.config(); //get environment variables
-const app: Application = express(); //create express app
-const port = process.env.PORT || 9001; //create port variable
+// this was neccesary to split out so I could use the it with JEST & SUPERTEST
+export default function setupExpress(){
+    const app: Application = express(); // create express app
+    // app.locals.connected_to_db = false; // set connected_to_db to false
+    // MIDDLEWARE
+    
+    // security
+    app.use(helmet()); // xss and other stuff
+    app.use(cors()); // cors
 
-// middleware
-//security
-app.use(helmet()); // xss and other stuff
-app.use(cors()); // cors
-//json
-app.use(express.json({strict:true})); // json
-app.use(handleBodyParserErrors); //handle express.json's bodyparses errors in case of eg bad json
-//docs
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
-//efficiency
-app.use(compression()); // gzip
+    // json
+    app.use(express.json()); // json, defaults to {strict:true}
+    app.use(handleBodyParserErrors); // handle express.json's bodyparses errors in case of eg bad json
 
-//routes
-app.use('/api/tours', toursRouter);
+    // swagger docs
+    app.use('/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
 
-const DB_URI = 'mongodb://andrei:nHZtFji3qPejxVLyzGVJaejX@localhost:27017/testDB?authSource=admin';
+    // efficiency
+    app.use(compression()); // gzip
 
-mongoose.connect(DB_URI)
-    .then(() => {
-    // only start listening once connected to db
-        app.listen(port, () => {
-            logger.info(`⚡️[Bukemes]: Express backend is running at https://localhost:${port}`);
-        });
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    // routes
+    app.use('/api/tours', toursRouter);
+
+    // redirect to docs cases
+    app.use('/api/', redirectToDocs);
+    app.use('/api', redirectToDocs);
+    app.use('/', redirectToDocs);
+
+    return app;
+}
+
+const redirectToDocs = (req: Request, res: Response, next: NextFunction) => {
+    res.redirect('/docs');
+};
