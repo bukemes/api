@@ -43,7 +43,7 @@ import { Request, response, Response } from 'express';
 describe('Tours', () => {
     describe('Is true,', () => {
         it(' true?', () => {
-            expect(true).toBe(false);
+            expect(true).toBe(true);
         });
     });    
 });

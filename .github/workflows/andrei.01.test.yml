@@ -7,7 +7,7 @@ on:
     branches: [ "dev" ] # the branches below must be a subset of the branches above
   
 jobs:
-  build: 
+  test: 
     runs-on: ubuntu-latest #select OS
         
     steps:
@@ -25,13 +25,3 @@ jobs:
       
       - name: Run tests
         run: npm run test # test the project
-  
-  # test:
-  #   runs-on: ubuntu-latest
-
-  #   services:
-  #     db:
-  #       image: mongo
-  #       ports: [27017:27017]
-
-  #   steps:
