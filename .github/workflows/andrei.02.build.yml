@@ -1,50 +1,42 @@
-name: 02 - build
+name: build
 
 on:
-  push:
-    branches: [ "workflows" ] # only do something if the branch "main" gets pushed to.
-  pull_request:
-    branches: [ "workflows" ] # the branches below must be a subset of the branches above
+  workflow_run:
+    workflows: [test]
+    types:
+      - completed
+
   
 jobs:
-  build: 
-    runs-on: ubuntu-latest #select OS
-    
-    # strategy: #install node.js
-    #   matrix:
-    #     node-version: [14.x, 16.x] # version 16.x || [10.x, 12.x, 14.x, 15.x]
+  on-success:
+      build: 
+        runs-on: ubuntu-latest #select OS
         
-    steps:
-      - name: checkout Repository
-        uses: actions/checkout@v3 # checksout current repository (a default Github Action)
-      
-      - name: Setup node.js | ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x' # ${{ matrix.node-version }}
-          cache: 'npm'
+        # strategy: #install node.js
+        #   matrix:
+        #     node-version: [14.x, 16.x] # version 16.x || [10.x, 12.x, 14.x, 15.x]
+            
+        steps:
+          - name: checkout Repository
+            uses: actions/checkout@v3 # checksout current repository (a default Github Action)
+          
+          - name: Setup node.js | ${{ matrix.node-version }}
+            uses: actions/setup-node@v3
+            with:
+              node-version: '16.x' # ${{ matrix.node-version }}
+              cache: 'npm'
 
-      - name: install dependencies
-        run: npm ci # clean install, similar to "npm i" but used in automated workflows
-      
-      - name: build the project
-        run: npm run build # build the project
+          - name: install dependencies
+            run: npm ci # clean install, similar to "npm i" but used in automated workflows
+          
+          - name: build the project
+            run: npm run build # build the project
 
-      - name: upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: bukemes-back-build
-          path: ./dist # or path/to/artifact
+          - name: upload artifact
+            uses: actions/upload-artifact@v3
+            with:
+              name: bukemes-back-build
+              path: ./dist # or path/to/artifact
 
-      - name: test
-        run: npm run test # test the project
-  
-  # test:
-  #   runs-on: ubuntu-latest
-
-  #   services:
-  #     db:
-  #       image: mongo
-  #       ports: [27017:27017]
-
-  #   steps:
+          - name: test
+            run: npm run test # test the project
