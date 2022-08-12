@@ -43,7 +43,7 @@ jobs:
           if-no-files-found: error
 
   job-dockerize: #create and publish docker image
-    needs: job-test_build
+    # needs: job-test_build
     runs-on: ubuntu-latest #select OS
         
     steps:
