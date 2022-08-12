@@ -7,7 +7,7 @@ on:
     branches: [ "dev" ] # the branches below must be a subset of the branches above
   
 jobs:
-  job-test&build: #run tests & build if they pass. 
+  job-test_build: #run tests & build if they pass. 
     runs-on: ubuntu-latest #select OS
         
     steps:
@@ -57,7 +57,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
