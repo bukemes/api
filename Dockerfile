@@ -3,12 +3,13 @@ LABEL authors="Andrei Lavrenov"
 
 # Create directories
 WORKDIR /app
-RUN mkdir -p ./dist
+# RUN mkdir -p ./dist
 
 # This will copy everything from the source path 
 COPY ./package*.json ./
+RUN ls -R
 COPY ./dist ./dist
-COPY ./dist ./
+RUN ls -R
 
 ENV NODE_ENV=production
 

@@ -29,7 +29,7 @@ jobs:
       - name: Build if tests pass
         run: npm run build
 
-      - name: upload artifact
+      - name: Upload Build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: bukemes-back-build
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest #select OS
         
     steps:
-      - name: Download Artifacts
+      - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
           name: bukemes-back-build
@@ -61,8 +61,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: elfensky/bukemes-back:dev
+      - name: Build Docker image
+        run: docker build ./ -t elfensky/bukemes-back          
+      # - name: Build and push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     push: true
+      #     tags: elfensky/bukemes-back:dev
