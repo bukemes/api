@@ -1,3 +1,6 @@
+# Structure
+
+
 /onboarding
 -> create admin user
 -> set default language
