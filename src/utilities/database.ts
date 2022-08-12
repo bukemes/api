@@ -8,8 +8,17 @@ import logger from './logger';
 // logger.log("info-to-db");
 
 export default async function setupMongoose(): Promise<mongoose.Connection> {
-    // const URI = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=${process.env.MONGO_AUTH_SOURCE}`;
-    const URI = 'mongodb://andrei:nHZtFji3qPejxVLyzGVJaejX@localhost:27017/testDB?authSource=admin';
+    const mongo = {
+        user: process.env.MONGO_USER,
+        pass: process.env.MONGO_PASSWORD,
+        host: process.env.MONGO_HOST,
+        port: process.env.MONGO_PORT,
+        name: process.env.MONGO_DB, // database name
+        auth: process.env.MONGO_AUTH_SOURCE
+    };
+
+    const URI = `mongodb://${mongo.user}:${mongo.pass}@${mongo.host}:${mongo.port}/${mongo.name}?authSource=${mongo.auth}`;
+    // logger.info(URI);
 
     // connect to DB
     mongoose.connect(URI)
@@ -29,20 +38,20 @@ export default async function setupMongoose(): Promise<mongoose.Connection> {
         logger.error(error.message);
     });
 
-    db.on('open', function (ref) {
+    db.on('open', () => {
         logger.info('open connection to mongo server.');
     });
     
-    db.on('connected', function (ref) {
+    db.on('connected', () => {
         logger.info('connected to mongo server.');
     });
 
-    db.on('disconnected', function (ref) {
+    db.on('disconnected', () => {
         // connected=false;
         logger.error('disconnected from mongo server.');
     });
     
-    db.on('close', function (ref) {
+    db.on('close', () => {
         // connected=false;
         logger.error('close connection to mongo server');
     });

@@ -1,0 +1,65 @@
+name: CICD
+
+on:
+  push:
+    branches: [ "dev" ] # only do something if the branch "main" gets pushed to.
+  pull_request:
+    branches: [ "dev" ] # the branches below must be a subset of the branches above
+  
+jobs:
+  job-test&build: #run tests & build if they pass. 
+    runs-on: ubuntu-latest #select OS
+        
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3 # checksout current repository (a default Github Action)
+      
+      - name: Setup node.js | ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x' # ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci # clean install, similar to "npm i" but used in automated workflows
+      
+      - name: Run tests
+        run: npm run test # test the project
+
+      - name: Build if tests pass
+        run: npm run build
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bukemes-back-build
+          # path: ./dist # or path/to/artifact
+          path: |
+            ./dist
+            ./package.json
+          if-no-files-found: error
+
+  job-dockerize: #create and publish docker image
+    needs: job-build
+    runs-on: ubuntu-latest #select OS
+        
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: bukemes-back-build
+
+      - name: Display structure of downloaded files #really only used for debugging
+        run: ls -R
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: elfensky/bukemes-back:dev
