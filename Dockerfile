@@ -7,9 +7,8 @@ WORKDIR /app
 
 # This will copy everything from the source path 
 COPY ./package*.json ./
-RUN ls -R
 COPY ./dist ./dist
-RUN ls -R
+# RUN ls -R
 
 ENV NODE_ENV=production
 
@@ -20,8 +19,8 @@ RUN npm ci --omit=dev
 
 EXPOSE 9001
 
-# CMD [ "npm","run","start" ]
-CMD [ "node", "./app.js" ]
+CMD [ "npm","run","start" ]
+# CMD [ "node", "./dist/app.js" ]
 
 # Run the following command to create a Docker image of this project:
 # docker build ./ -t elfensky/bukemes-back 
