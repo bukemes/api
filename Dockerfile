@@ -8,8 +8,12 @@ WORKDIR /app
 COPY ./package*.json .
 COPY ./dist ./dist
 
-# update each dependency in package.json to the latest version
-RUN npm ci --production
+ENV NODE_ENV=production
+
+# install dependencies
+RUN npm ci --omit=dev
+# --omit=dev
+# --production 
 
 EXPOSE 9001
 

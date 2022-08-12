@@ -37,6 +37,9 @@ jobs:
           path: |
             ./dist
             ./package.json
+            ./package-lock.json
+            ./Dockerfile
+            ./.dockerignore
           if-no-files-found: error
 
   job-dockerize: #create and publish docker image

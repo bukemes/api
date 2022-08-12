@@ -32,7 +32,14 @@ const openapiOptions: swaggerJSDoc.Options = {
         host: 'localhost:9001',
         basePath: '/api/v1',
     },
-    apis: ['./src/routers/*.ts','./src/models/*.ts','./src/controllers/*.ts'],
+    apis: [
+        './src/routers/*.ts',
+        './src/models/*.ts',
+        './src/controllers/*.ts',
+        './src/routers/*.js',
+        './src/models/*.js',
+        './src/controllers/*.js'
+    ],
 };
 
 const openapiSpecification = swaggerJSDoc(openapiOptions);
