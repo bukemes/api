@@ -32,7 +32,7 @@ jobs:
       - name: Upload Build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: bukemes-back-build
+          name: bukemes-api-build
           # path: ./dist # or path/to/artifact
           path: |
             ./dist
@@ -50,7 +50,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: bukemes-back-build
+          name: bukemes-api-build
 
       - name: Display structure of downloaded files #really only used for debugging
         run: ls -R
