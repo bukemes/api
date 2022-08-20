@@ -14,7 +14,7 @@ used to setup, configure, structure and build the project
 1. [MongooseJS | Docs](https://mongoosejs.com/docs/index.html)
 1. [MasteringJS | Mongoose Schema Tutorial](https://masteringjs.io/tutorials/mongoose/schema)
 1. [Hashnode | Update schema changes in Mongo](https://hashnode.com/post/how-do-you-update-schema-changes-in-mongodb-ciwsye7me00jpy35320lv3mne)
-1. 
+1. [Statics w/ Typescript](https://mongoosejs.com/docs/typescript/statics-and-methods.html)
 
 ## Swagger
 used to implement API documentation into the project

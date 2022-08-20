@@ -17,7 +17,7 @@ async function app() {
 
     db.once('open', function() {
         const express = setupExpress();
-        const port = process.env.PORT || 9001; // create port variable
+        const port = process.env.PORT || 9002; // create port variable
     
         // only start listening once connected to db
         express.listen(port, () => {

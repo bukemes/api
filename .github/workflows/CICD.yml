@@ -73,4 +73,4 @@ jobs:
         with:
           context: ./
           push: true
-          tags: elfensky/bukemes-back:dev
+          tags: elfensky/bukemes-api:dev

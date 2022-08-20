@@ -1,5 +1,5 @@
 // import mongoose, { Schema } from 'mongoose';
-import mongoose, { Types, Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose'; // Types
 
 export interface TourInput {
     title: string;

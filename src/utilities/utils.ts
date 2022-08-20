@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import logger from './logger';
 
 function isValidID(id: any) {
     if (mongoose.Types.ObjectId.isValid(id)) {
@@ -39,8 +41,43 @@ const handleBodyParserErrors = (err: any, req: Request, res: Response, next: Nex
     next();
 };
 
+// function createJWT (_id: string, name: string) {
+//     const token =  jwt.sign({_id, name}, 
+//         process.env.SECRET_JWT as string, 
+//         {expiresIn: '1d'}
+//     );
+
+//     return token;
+// }
+
+function createJWT (input: any) {
+    const data = {
+        ...input
+    };
+    logger.info(data);
+    
+    const token =  jwt.sign({...data}, 
+        process.env.SECRET_JWT as string, 
+        {expiresIn: '1d'}
+    );
+
+    return token;
+}
+
+function checkEnvVariables () {
+    if (!process.env.SECRET_JWT) {
+        throw new Error('JWT_SECRET is not defined');
+    }
+}
+
+function generateRandomUUID () {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+
 export {
     isValidID,
     isValidJSON,
     handleBodyParserErrors,
+    createJWT
 };

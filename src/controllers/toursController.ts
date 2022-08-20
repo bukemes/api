@@ -27,6 +27,7 @@ const getTourById = async (req: Request, res: Response) => {
     });
 };
 
+// only admins can do this
 const createTour = async (req: Request, res: Response) => {
     const {
         title,

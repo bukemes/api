@@ -1,5 +1,5 @@
 // config & init
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response } from 'express';
 // middleware
 import compression from 'compression';
 // security
@@ -12,6 +12,7 @@ import openapiSpecification from './swagger';
 // import logger from './logger';
 import { handleBodyParserErrors } from './utils';
 // routes
+import authRouter from '../routers/authRouter';
 import toursRouter from '../routers/toursRouter';
 
 // this was neccesary to split out so I could use the it with JEST & SUPERTEST
@@ -28,23 +29,28 @@ export default function setupExpress(){
     app.use(express.json()); // json, defaults to {strict:true}
     app.use(handleBodyParserErrors); // handle express.json's bodyparses errors in case of eg bad json
 
-    // swagger docs
-    app.use('/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
-
-    // efficiency
-    app.use(compression()); // gzip
-
-    // routes
+    // API routes
+    // app.use('/auth', authRouter);
     app.use('/api/tours', toursRouter);
+
+    // Docs
+    app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
 
     // redirect to docs cases
     app.use('/api/', redirectToDocs);
     app.use('/api', redirectToDocs);
     app.use('/', redirectToDocs);
 
+    // React
+    app.use('/admin', express.static('public')); // serve static files from public folder, put React Admin here when deploying
+    // app.use('/site', express.static('public/site')); // serve static files from public folder, put React App here when deploying
+
+    // efficiency
+    app.use(compression()); // gzip
+
     return app;
 }
 
-const redirectToDocs = (req: Request, res: Response, next: NextFunction) => {
-    res.redirect('/docs');
+const redirectToDocs = (req: Request, res: Response) => {
+    res.redirect('/api/docs');
 };

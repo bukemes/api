@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-//validate request against a schema.
+// validate request against a schema.
 import {Request, Response, NextFunction} from 'express';
 import { AnyZodObject } from 'zod';
 import logger from './logger';
