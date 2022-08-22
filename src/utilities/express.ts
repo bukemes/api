@@ -5,6 +5,7 @@ import compression from 'compression';
 // security
 import helmet from 'helmet'; // import xss from 'xss'; -> helmet.xss(); takes care of that.
 import cors from 'cors'; // helmet contains cors? need to check. 
+import cookieParser from 'cookie-parser';
 // documentation
 import swaggerUI from 'swagger-ui-express';
 import openapiSpecification from './swagger';
@@ -12,8 +13,8 @@ import openapiSpecification from './swagger';
 // import logger from './logger';
 import { handleBodyParserErrors } from './utils';
 // routes
-import authRouter from '../routers/authRouter';
 import toursRouter from '../routers/toursRouter';
+import mediaRouter from '../routers/mediaRouter';
 
 // this was neccesary to split out so I could use the it with JEST & SUPERTEST
 export default function setupExpress(){
@@ -22,9 +23,15 @@ export default function setupExpress(){
     // MIDDLEWARE
     
     // security
-    app.use(helmet()); // xss and other stuff
-    app.use(cors()); // cors
-
+    // app.use(helmet()); // xss and other stuff
+    // app.use(cors()); // cors
+    app.use(cors({
+        credentials: true, 
+        origin: 'http://localhost:9003',
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    }));
+    app.use(cookieParser()); // cookie parser
     // json
     app.use(express.json()); // json, defaults to {strict:true}
     app.use(handleBodyParserErrors); // handle express.json's bodyparses errors in case of eg bad json
@@ -32,19 +39,23 @@ export default function setupExpress(){
     // API routes
     // app.use('/auth', authRouter);
     app.use('/api/tours', toursRouter);
+    app.use('/api/media', mediaRouter);
 
     // Docs
     app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
+    
+    // images
+    app.use('/api/', express.static('public')); // serve static files from public folder, put React App here when deploying
 
     // redirect to docs cases
-    app.use('/api/', redirectToDocs);
-    app.use('/api', redirectToDocs);
-    app.use('/', redirectToDocs);
+    // app.use('/api/', redirectToDocs);
+    // app.use('/api', redirectToDocs);
+    // app.use('/', redirectToDocs);
 
     // React
-    app.use('/admin', express.static('public')); // serve static files from public folder, put React Admin here when deploying
+    // app.use('/admin', express.static('public')); // serve static files from public folder, put React Admin here when deploying
     // app.use('/site', express.static('public/site')); // serve static files from public folder, put React App here when deploying
-
+    
     // efficiency
     app.use(compression()); // gzip
 

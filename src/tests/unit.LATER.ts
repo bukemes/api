@@ -2,7 +2,7 @@
 // - MOCK RESPONSES, WITHOUT DATABASE!!! 
 // - TESTING INDIVIDUAL FUNCTIONS, CLASSES, MODULES, SCHEMAS, ETC.
 // import tourController from '../controllers/tourController';
-import tourModel, {TourDocument, TourInput} from '../models/tourModel';
+import TOUR, {TourDocument, TourInput} from '../models/tourModel';
 import { faker } from '@faker-js/faker';
 import * as db from './db';
 
@@ -13,14 +13,14 @@ describe('UNIT TESTS', () => {
     // afterAll();
     // async () => await db.clear(), 
 
-    test('tourModel: Create Tour', async () => {
+    test('TOUR: Create Tour', async () => {
         const tourInput: TourInput = {
             title: faker.commerce.product(),
             description: faker.commerce.productDescription(),
             headerImage: faker.image.image(600,400),
             duration: faker.datatype.number({ min: 30, max: 240 }),
         };
-        const tour = new tourModel({ ...tourInput });
+        const tour = new TOUR({ ...tourInput });
         const createdTour = await tour.save();
         expect(createdTour).toBeDefined();
         expect(createdTour.title).toBe(tour.title);

@@ -2,6 +2,7 @@
 import mongoose, { Schema, Document } from 'mongoose'; // Types
 
 export interface TourInput {
+    isPublished: boolean;
     title: string;
     description: string;
     headerImage: string;
@@ -14,6 +15,10 @@ export interface TourDocument extends TourInput, Document {
 }
 
 const tourSchema = new Schema<TourDocument>({
+    isPublished: {
+        type: Boolean,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -32,6 +37,6 @@ const tourSchema = new Schema<TourDocument>({
 }, { timestamps: true });
 
 
-const tourModel = mongoose.model('Tour', tourSchema);
+const TOUR = mongoose.model('Tour', tourSchema);
 // export default mongoose.model('Tour', tourSchema);
-export default tourModel;
+export default TOUR;

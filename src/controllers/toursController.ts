@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import Tour from '../models/tourModel';
+import TOUR from '../models/tourModel';
 import mongoose from 'mongoose';
 
 const getTours = async (req: Request, res: Response) => {
-    const tours = await Tour.find({}).sort({ createdAt: 'desc' });
+    const tours = await TOUR.find({}).sort({ createdAt: 'desc' });
     return res.status(200).json(tours);
 };
 
@@ -14,7 +14,7 @@ const getTourById = async (req: Request, res: Response) => {
         return res.status(400).json({ error: 'Invalid id' });
     }
 
-    const tour = await Tour.findById(id);
+    const tour = await TOUR.findById(id);
 
     if (!tour) {
         return res.status(404).json({
@@ -37,7 +37,7 @@ const createTour = async (req: Request, res: Response) => {
     } = req.body;
 
     try {
-        const tour = await Tour.create({
+        const tour = await TOUR.create({
             title, description, headerImage, duration,
         });
         res.status(201).json(tour);

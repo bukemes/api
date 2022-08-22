@@ -2,13 +2,15 @@
 import dotenv from 'dotenv';
 // db
 // import mongoose from 'mongoose';
-// custom
+// utils
 import logger from './utilities/logger';
 import setupExpress from './utilities/express';
 import setupMongoose from './utilities/database';
+import { checkEnvVariables } from './utilities/utils';
 
 // setup
 dotenv.config(); // get environment variables
+checkEnvVariables();
 app();
 // logger.info(process.env);
 
