@@ -15,6 +15,7 @@ describe('UNIT TESTS', () => {
 
     test('TOUR: Create Tour', async () => {
         const tourInput: TourInput = {
+            isPublished: true,
             title: faker.commerce.product(),
             description: faker.commerce.productDescription(),
             headerImage: faker.image.image(600,400),

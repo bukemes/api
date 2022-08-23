@@ -13,8 +13,10 @@ import openapiSpecification from './swagger';
 // import logger from './logger';
 import { handleBodyParserErrors } from './utils';
 // routes
+import metadataRouter from '../routers/metadataRouter';
 import toursRouter from '../routers/toursRouter';
 import mediaRouter from '../routers/mediaRouter';
+import scheduleRouter from '../routers/scheduleRouter';
 
 // this was neccesary to split out so I could use the it with JEST & SUPERTEST
 export default function setupExpress(){
@@ -37,9 +39,10 @@ export default function setupExpress(){
     app.use(handleBodyParserErrors); // handle express.json's bodyparses errors in case of eg bad json
 
     // API routes
-    // app.use('/auth', authRouter);
+    app.use('/api/metadata', metadataRouter);
     app.use('/api/tours', toursRouter);
     app.use('/api/media', mediaRouter);
+    app.use('/api/schedules', scheduleRouter);
 
     // Docs
     app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));

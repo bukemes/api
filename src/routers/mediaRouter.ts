@@ -1,6 +1,5 @@
 import express, { Request } from 'express';
 import { getMedia, uploadMedia, editMedia, deleteMediaById } from '../controllers/mediaController';
-// below moves to mediaRouter
 import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
 import multer from 'multer';
@@ -68,13 +67,13 @@ const upload = multer({
  */
 const mediaRouter = express.Router();
 
-mediaRouter.get('/', getMedia);
 // auth
 mediaRouter.use(requireAuth);
 mediaRouter.use(requireAdmin);
 // routes
+mediaRouter.get('/', getMedia);
 mediaRouter.post('/upload', upload.single('media'), uploadMedia);
-mediaRouter.put('/:id', editMedia);
+// mediaRouter.put('/:id', editMedia);
 mediaRouter.delete('/:id', deleteMediaById);
 
 export default mediaRouter;
