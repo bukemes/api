@@ -73,8 +73,8 @@ mediaRouter.use(requireAdmin);
 // routes
 mediaRouter.get('/', getMedia);
 mediaRouter.post('/upload', upload.single('media'), uploadMedia);
-// mediaRouter.put('/:id', editMedia);
 mediaRouter.delete('/:id', deleteMediaById);
+// mediaRouter.put('/:id', editMedia);
 
 export default mediaRouter;
 

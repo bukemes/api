@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import TOUR, { InternationalTourInput } from '../models/tourModel';
 import mongoose from 'mongoose';
