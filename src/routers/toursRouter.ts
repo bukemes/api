@@ -1,5 +1,17 @@
 import express from 'express';
-import { getTours, getTourById, createTour } from '../controllers/toursController';
+// auth
+import { requireAuth } from '../middleware/requireAuth';
+import { requireAdmin } from '../middleware/requireAdmin';
+// controllers
+import { 
+    getTours, 
+    getTourById, 
+    createTour, 
+    deleteTourById, 
+    editTourById,
+    getPublishedTours
+} from '../controllers/toursController';
+
 /**
  * @openapi
  * tags: 
@@ -65,6 +77,12 @@ import { getTours, getTourById, createTour } from '../controllers/toursControlle
  *        duration: 45
  */
 const toursRouter = express.Router();
+
+toursRouter.get('/public', getPublishedTours);
+
+// auth middleware
+toursRouter.use(requireAuth);
+toursRouter.use(requireAdmin);
 
 /**
  * @openapi
@@ -147,14 +165,52 @@ toursRouter.get('/:id', getTourById);
  */
 toursRouter.post('/', createTour);
 
-// DELETE all of a type
-toursRouter.delete('/', (req, res) => {
-    res.json({ mssg: 'DELETE all tours' });
-});
+/**
+ * @openapi
+ * /tours:
+ *   delete:
+ *     tags: [Tours]
+ *     summary: Delete a tour
+ *     description: DELETE with a valid tourID in the url
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the tour
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Tour'  
+ *       400:
+ *         description: Bad request, returns the error message in the response body in JSON format
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *        description: No tour with that ID found
+ *       500:
+ *        description: Internal server error
+ */
+toursRouter.delete('/:id', deleteTourById);
 
-toursRouter.delete('/:id', (req, res) => {
-    res.json({ mssg: 'DELETE a specific tour' });
-});
+toursRouter.put('/:id', editTourById);
+
+export default toursRouter;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @openapi
@@ -178,7 +234,7 @@ toursRouter.delete('/:id', (req, res) => {
  *           schema:
  *             $ref: '#/components/schemas/Tour_Create'
  *     responses:
- *       204:
+ *       200:
  *         description: Returns the updated tour in the response body in JSON format
  *       400:
  *         description: Bad request, returns the error message in the response body in JSON format
@@ -187,12 +243,6 @@ toursRouter.delete('/:id', (req, res) => {
  *       404:
  *         description: internal server error
  */
-toursRouter.put('/', (req, res) => {
-    res.json({ mssg: 'Update all tours (eg add new field to all)' });
-});
-
-toursRouter.put('/:id', (req, res) => {
-    res.json({ mssg: 'Update a specific tour' });
-});
-
-export default toursRouter;
+// toursRouter.put('/', (req, res) => {
+//     res.json({ mssg: 'Update all tours (eg add new field to all)' });
+// });

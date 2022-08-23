@@ -18,7 +18,7 @@ export interface InternationalTourInput {
     isPublished: boolean;
     i18n: Array<LocalizedData>;
     headerImage: string;
-    schedule: mongoose.Schema.Types.ObjectId;
+    schedule: mongoose.Types.ObjectId; // mongoose.Schema.Types.ObjectId;
     duration: number;
 }
 export interface TourDocument extends InternationalTourInput, Document {
