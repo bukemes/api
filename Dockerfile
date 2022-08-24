@@ -1,5 +1,5 @@
 # Run the following command to create a Docker image of this project:
-# docker build ./ -t elfensky/bukemes-back 
+# docker build ./ -t elfensky/bukemes-api:local
 
 FROM node:16-alpine
 LABEL authors="Andrei Lavrenov"
