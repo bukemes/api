@@ -9,7 +9,8 @@ import {
     createTour, 
     deleteTourById, 
     editTourById,
-    getPublishedTours
+    getPublishedTours,
+    getPublishedToursById
 } from '../controllers/toursController';
 
 /**
@@ -79,6 +80,7 @@ import {
 const toursRouter = express.Router();
 
 toursRouter.get('/public', getPublishedTours);
+toursRouter.get('/public/:id', getPublishedToursById);
 
 // auth middleware
 toursRouter.use(requireAuth);

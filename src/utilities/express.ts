@@ -17,6 +17,8 @@ import metadataRouter from '../routers/metadataRouter';
 import toursRouter from '../routers/toursRouter';
 import mediaRouter from '../routers/mediaRouter';
 import scheduleRouter from '../routers/scheduleRouter';
+import reservationRouter from '../routers/reservationRouter';
+import reviewRouter from '../routers/reviewRouter';
 
 // this was neccesary to split out so I could use the it with JEST & SUPERTEST
 export default function setupExpress(){
@@ -43,6 +45,8 @@ export default function setupExpress(){
     app.use('/api/tours', toursRouter);
     app.use('/api/media', mediaRouter);
     app.use('/api/schedules', scheduleRouter);
+    app.use('/api/reservations', reservationRouter);
+    app.use('/api/reviews', reviewRouter);
 
     // Docs
     app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));

@@ -14,7 +14,7 @@ checkEnvVariables();
 app();
 // logger.info(process.env);
 
-async function app() {
+export async function app() {
     const db = await setupMongoose();
 
     db.once('open', function() {

@@ -6,7 +6,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 let mongoDB: any = null;
 
 export const connect = async () => {
-    mongoDB = await MongoMemoryServer.create();
+    mongoDB = new MongoMemoryServer();
+    // mongoDB = await MongoMemoryServer.create();
     const uri = await mongoDB.getUri();
     const options = {
         useNewUrlParser: true,

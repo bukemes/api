@@ -5,13 +5,20 @@
 import mongoose from 'mongoose';
 import TOUR, {LocalizedData, InternationalTourInput} from '../models/tourModel';
 import { faker } from '@faker-js/faker';
-import * as db from './db';
+// import * as db from './db';
+import db from './db2';
+// import request from 'supertest';
+// import { app } from '../app';
+// import setupExpress from '../utilities/express';
+
 
 describe('UNIT TESTS', () => {
+    // const app = setupExpress();
+    // const agent = request.agent(app);
 
     beforeEach(async () => await db.connect());
-    afterEach(async () => await db.close());
-    // afterAll();
+    afterEach(async () => await db.clear());
+    afterAll(async () => await db.close());
     // async () => await db.clear(), 
 
     test('TOUR: Create Tour', async () => {
@@ -35,5 +42,15 @@ describe('UNIT TESTS', () => {
         expect(createdTour.headerImage).toBe(tour.headerImage);
         expect(createdTour.duration).toBe(tour.duration);
     });
+
+    // describe('tags', () => {
+    //     describe('POST /tags', () => {
+    //         test('successful', async () => {
+    //             const res = await agent.post('/tags').send({ name: 'test-tag'});
+    //             expect(res.statusCode).toEqual(201);
+    //             expect(res.body).toBeTruthy();
+    //         });
+    //     });
+    // });
       
 });

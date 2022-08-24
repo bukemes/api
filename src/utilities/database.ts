@@ -60,7 +60,6 @@ export default async function setupMongoose(): Promise<mongoose.Connection> {
     return db;
 }
 
-
 // // 0 = disconnected
 // // 1 = connected
 // // 2 = connecting

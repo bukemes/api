@@ -139,6 +139,33 @@ const getPublishedTours = async (req: Request, res: Response) => {
     return res.status(200).json(tours);
 };
 
+const getPublishedToursById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid id' });
+    }
+    // const tours = await TOUR.find({ isPublished: true }).sort({ createdAt: 'asc' });
+    const tour = await TOUR.findById(id);
+
+    if (!tour) {
+        const error: ICustomError = {
+            code: 400,
+            type: 'Bad Request',
+            message: 'No tour with provided ID was found',
+        };  return res.status(error.code).json(error);
+    }
+
+    if(!tour.isPublished) {
+        const error: ICustomError = {
+            code: 401,
+            type: 'Unauthorized',
+            message: 'Tour is not published',
+        };  return res.status(error.code).json(error);
+    }
+
+    return res.status(200).json(tour);
+};
 
 export {
     createTour,
@@ -147,6 +174,7 @@ export {
     deleteTourById,
     editTourById,
     getPublishedTours,
+    getPublishedToursById
 };
 
 const isValidTour = (input: any, missingProperties: any): input is InternationalTourInput => {

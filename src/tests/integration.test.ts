@@ -10,35 +10,6 @@ import { Request, response, Response } from 'express';
 
 // without authentication, test things separately
 
-// connect to database
-// start app with db
-// test routers with db
-// test controllers with db
-// etc...
-
-// jest.setTimeout(60000);
-
-// function createResponse() {
-//     let res = {
-//         send: function(){},
-//         json: function(d: any) {
-//             console.log('\n : ' + d);
-//         },
-//         status: function(s: any) {
-//             this.statusCode = s;
-//             return this;
-//         },
-//         statusCode: null
-//     };
-
-//     return res;
-// }
-
-
-// beforeAll(async () => await db.connect());
-// afterEach(async () => await db.clear());
-// afterAll(async () => await db.close());
-
 
 describe('Tours', () => {
     describe('Is true,', () => {

@@ -11,6 +11,27 @@ import SCHEDULE from '../models/scheduleModel';
 
 const scheduleRouter = express.Router();
 
+scheduleRouter.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid id' });
+    }
+
+    SCHEDULE.findById(id)
+        .then((data) => {
+            res.status(200).json(data);
+        }).catch(err => {
+            logger.error(err);
+            const error = new CustomError({
+                code: 404,
+                type: 'Internal Server Error',
+                message: 'No schedlue with this ID found'
+            });
+            ErrorResponse(error, res);
+        });
+});
+
 // auth middleware
 scheduleRouter.use(requireAuth);
 scheduleRouter.use(requireAdmin);

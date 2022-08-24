@@ -1,20 +1,18 @@
 import mongoose, { Schema, Document } from 'mongoose'; // Types
 
-export interface IReservationData {
-    isApproved?: boolean;
+export interface IReviewData {
     email: string,
     userId: mongoose.Types.ObjectId;
-    tour: string;
     tourId: mongoose.Types.ObjectId;
-    date: Date; // or string
+    text: string; // review body
 }
 
-export interface ReservationDocument extends IReservationData, Document {
+export interface ReviewDocument extends IReviewData, Document {
     updatedAt: Date;
     createdAt: Date;
 }
 
-const reservationSchema = new Schema<ReservationDocument>({
+const reviewSchema = new Schema<ReviewDocument>({
     email: {
         type: String, 
         required: true,
@@ -24,24 +22,17 @@ const reservationSchema = new Schema<ReservationDocument>({
         ref: 'User',
         required: true,
     },
-    tour: {
-        type: String,
-        required: true,
-    },
     tourId: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Tour',
         required: true,
     },
-    isApproved: {
-        type: Boolean,
-    },
-    date: {
-        type: Date,
+    text: {
+        type: String,
         required: true,
     },
 }, { timestamps: true });
 
 
-const RESERVATION = mongoose.model('Reservation', reservationSchema);
-export default RESERVATION;
+const REVIEW = mongoose.model('Review', reviewSchema);
+export default REVIEW;
