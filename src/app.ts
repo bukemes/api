@@ -2,22 +2,24 @@
 import dotenv from 'dotenv';
 // db
 // import mongoose from 'mongoose';
-// custom
+// utils
 import logger from './utilities/logger';
 import setupExpress from './utilities/express';
 import setupMongoose from './utilities/database';
+import { checkEnvVariables } from './utilities/utils';
 
 // setup
 dotenv.config(); // get environment variables
+checkEnvVariables();
 app();
 // logger.info(process.env);
 
-async function app() {
+export async function app() {
     const db = await setupMongoose();
 
     db.once('open', function() {
         const express = setupExpress();
-        const port = process.env.PORT || 9001; // create port variable
+        const port = process.env.PORT || 9002; // create port variable
     
         // only start listening once connected to db
         express.listen(port, () => {

@@ -1,5 +1,6 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 
+const port = process.env.PORT || 9002; // create port variable
 
 const openapiOptions: swaggerJSDoc.Options = {
     definition: {
@@ -13,7 +14,7 @@ const openapiOptions: swaggerJSDoc.Options = {
         },
         servers: [
             {
-                url:'http://localhost:9001/api',
+                url: `http://localhost:${port}/api`,
                 description: 'Local server',
             }
         ],

@@ -1,3 +1,6 @@
+# Run the following command to create a Docker image of this project:
+# docker build ./ -t elfensky/bukemes-api:local
+
 FROM node:16-alpine
 LABEL authors="Andrei Lavrenov"
 
@@ -21,7 +24,3 @@ EXPOSE 9001
 
 CMD [ "npm","run","start" ]
 # CMD [ "node", "./dist/app.js" ]
-
-# Run the following command to create a Docker image of this project:
-# docker build ./ -t elfensky/bukemes-back 
-

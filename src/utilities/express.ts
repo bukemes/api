@@ -1,10 +1,11 @@
 // config & init
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response } from 'express';
 // middleware
 import compression from 'compression';
 // security
 import helmet from 'helmet'; // import xss from 'xss'; -> helmet.xss(); takes care of that.
 import cors from 'cors'; // helmet contains cors? need to check. 
+import cookieParser from 'cookie-parser';
 // documentation
 import swaggerUI from 'swagger-ui-express';
 import openapiSpecification from './swagger';
@@ -12,7 +13,12 @@ import openapiSpecification from './swagger';
 // import logger from './logger';
 import { handleBodyParserErrors } from './utils';
 // routes
+import metadataRouter from '../routers/metadataRouter';
 import toursRouter from '../routers/toursRouter';
+import mediaRouter from '../routers/mediaRouter';
+import scheduleRouter from '../routers/scheduleRouter';
+import reservationRouter from '../routers/reservationRouter';
+import reviewRouter from '../routers/reviewRouter';
 
 // this was neccesary to split out so I could use the it with JEST & SUPERTEST
 export default function setupExpress(){
@@ -21,30 +27,63 @@ export default function setupExpress(){
     // MIDDLEWARE
     
     // security
-    app.use(helmet()); // xss and other stuff
-    app.use(cors()); // cors
-
+    // app.use(helmet()); // xss and other stuff
+    // app.use(cors()); // cors
+    const whitelist = ['http://localhost', 'http://localhost:9003', 'https://tania.tours', ];
+    const corsOptions = {
+        credentials: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        origin: function (origin:any, callback:any) {
+            if (whitelist.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    };
+    app.use(cors(corsOptions));
+    // app.use(cors({
+    //     credentials: true, 
+    //     origin: 'http://localhost:9003',
+    //     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    //     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    // }));
+    app.use(cookieParser()); // cookie parser
     // json
     app.use(express.json()); // json, defaults to {strict:true}
     app.use(handleBodyParserErrors); // handle express.json's bodyparses errors in case of eg bad json
 
-    // swagger docs
-    app.use('/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
-
-    // efficiency
-    app.use(compression()); // gzip
-
-    // routes
+    // API routes
+    app.use('/api/metadata', metadataRouter);
     app.use('/api/tours', toursRouter);
+    app.use('/api/media', mediaRouter);
+    app.use('/api/schedules', scheduleRouter);
+    app.use('/api/reservations', reservationRouter);
+    app.use('/api/reviews', reviewRouter);
+
+    // Docs
+    app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
+    
+    // images
+    app.use('/api/', express.static('public')); // serve static files from public folder, put React App here when deploying
 
     // redirect to docs cases
-    app.use('/api/', redirectToDocs);
-    app.use('/api', redirectToDocs);
-    app.use('/', redirectToDocs);
+    // app.use('/api/', redirectToDocs);
+    // app.use('/api', redirectToDocs);
+    // app.use('/', redirectToDocs);
+
+    // React
+    // app.use('/admin', express.static('public')); // serve static files from public folder, put React Admin here when deploying
+    // app.use('/site', express.static('public/site')); // serve static files from public folder, put React App here when deploying
+    
+    // efficiency
+    app.use(compression()); // gzip
 
     return app;
 }
 
-const redirectToDocs = (req: Request, res: Response, next: NextFunction) => {
-    res.redirect('/docs');
+const redirectToDocs = (req: Request, res: Response) => {
+    res.redirect('/api/docs');
 };

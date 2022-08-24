@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import logger from './logger';
+import { exit } from 'process';
 
 function isValidID(id: any) {
     if (mongoose.Types.ObjectId.isValid(id)) {
@@ -39,8 +42,58 @@ const handleBodyParserErrors = (err: any, req: Request, res: Response, next: Nex
     next();
 };
 
+// function createJWT (_id: string, name: string) {
+//     const token =  jwt.sign({_id, name}, 
+//         process.env.SECRET_JWT as string, 
+//         {expiresIn: '1d'}
+//     );
+
+//     return token;
+// }
+
+function createJWT (input: any) {
+    const data = {
+        ...input
+    };
+    logger.info(data);
+    
+    const token =  jwt.sign({...data}, 
+        process.env.SECRET_JWT as string, 
+        {expiresIn: '1d'}
+    );
+
+    return token;
+}
+
+function checkEnvVariables () {
+    // console.log(process.env);
+    const availableEnvVariables = process.env;
+
+    const requiredEnvVariables = [
+        'NODE_ENV', 'PORT', 
+        'MONGO_USER', 'MONGO_PASSWORD', 'MONGO_HOST', 'MONGO_PORT', 'MONGO_DB', 'MONGO_AUTH_SOURCE',
+        'SECRET_JWT', 'SECRET_PKCE',
+    ];
+
+    let message = '';
+    requiredEnvVariables.forEach((envVariable) => {
+        if(envVariable in availableEnvVariables){
+            // console.log(`${envVariable} is available`);
+        } else {
+            message += '\n' + envVariable;
+        }
+    });
+
+    if (message.length > 0) {
+        console.log(`You are missing the following environment variable:${message}`);
+        process.exit(1);
+    }
+}
+
 export {
     isValidID,
     isValidJSON,
     handleBodyParserErrors,
+    createJWT,
+    checkEnvVariables
 };

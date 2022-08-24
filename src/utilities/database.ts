@@ -48,17 +48,17 @@ export default async function setupMongoose(): Promise<mongoose.Connection> {
 
     db.on('disconnected', () => {
         // connected=false;
-        logger.error('disconnected from mongo server.');
+        logger.warn('disconnected from mongo server.');
+        // logger.
     });
     
     db.on('close', () => {
         // connected=false;
-        logger.error('close connection to mongo server');
+        logger.warn('close connection to mongo server');
     });
 
     return db;
 }
-
 
 // // 0 = disconnected
 // // 1 = connected
